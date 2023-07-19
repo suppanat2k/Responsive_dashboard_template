@@ -11,3 +11,4 @@ Package collapse
 - BLoC
 - Lotties
 - SidebarX
+- Syncfusion chart
