@@ -1,3 +1,13 @@
-# project_dashboard
+# Responsive Template by Flutter
 
-A new Flutter project.
+Responsive template by flutter
+- able for desktop
+- able for tablet
+- able for mobile ios/android
+
+Package collapse
+- Sizer
+- Responsive_framwork_flutter
+- BLoC
+- Lotties
+- SidebarX
