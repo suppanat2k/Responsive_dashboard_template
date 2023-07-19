@@ -1,15 +1,16 @@
 
 import 'package:flutter/material.dart';
 
-bool setModeTheme = true;
-final mainThemeColor = MainColor();
-final subThemeColor = SubColor();
-final spreadColor = SpreadColor();
-final baseColor = LightModeColor();
-class MainColor {
-  // final mainColor = const Color(0xFF408CFF);
+class MainColorBlue {
   final mainColor = const Color(0xFF408CFF);
   final subMainColor = const Color(0xFF2CC0FF);
+  final subMainColor2 = const Color.fromARGB(255, 126, 216, 255);
+}
+
+class MainColorRed {
+  final mainColor = const Color(0xFF8E54E9);
+  final subMainColor = const Color(0xFF4776E6);
+  final subMainColor2 = const Color.fromARGB(255, 118, 151, 228);
 }
 
 class SubColor {

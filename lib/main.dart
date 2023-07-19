@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:project_dashboard/bloc/app_theme_bloc/app_theme_bloc.dart';
 import 'package:project_dashboard/bloc/branch_chart_bloc/branch_chart_bloc.dart';
 import 'package:project_dashboard/bloc/color_chart_bloc/color_chart_bloc.dart';
 import 'package:project_dashboard/bloc/home_bloc/home_bloc.dart';
@@ -34,36 +35,42 @@ class MainApp extends StatelessWidget {
     final comparisonChartBloc = BlocProvider<ComparisonChartBloc>(create: (context) => ComparisonChartBloc()..add(ComparisonMainChart()));
     final teamTableBloc = BlocProvider<TeamTableBloc>(create: (context) => TeamTableBloc()..add(TeamTableGetData()));
     final topSalemanBloc = BlocProvider<TopSalemanBloc>(create: (context) => TopSalemanBloc()..add(TopSalemanGetData()));
+    final appThemeBloc = BlocProvider<AppThemeBloc>(create: (context) => AppThemeBloc());
 
     return MultiBlocProvider(
-        providers: [homeBloc,branchChartBloc,modelChartBloc,colorChartBloc,comparisonChartBloc,teamTableBloc,topSalemanBloc],
+        providers: [homeBloc,branchChartBloc,modelChartBloc,colorChartBloc,comparisonChartBloc,teamTableBloc,topSalemanBloc,appThemeBloc],
         child: Sizer(builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            builder: (context, child) => ResponsiveBreakpoints.builder(
-              child: BlocBuilder<HomeBloc, HomeState>(
-                builder: (context, state) {
-                  if (state is HomeLoaded) {
-                    return Center(
-                        child: Lottie.asset("assets/lotties/Loading.json",
-                            width: 400));
-                  }
-                  if (state is HomeLoading) {
-                    return const HomeScreen();
-                  }
-                  return Center(
-                      child: Lottie.asset("assets/lotties/Loading.json",
-                          width: 400));
-                },
-              ),
-              breakpoints: [
-                const Breakpoint(start: 0, end: 450, name: MOBILE),
-                const Breakpoint(start: 451, end: 800, name: TABLET),
-                const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-                const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-              ],
-            ),
-            debugShowCheckedModeBanner: false,
-            routes: AppRoute().getAll,
+          return BlocBuilder<AppThemeBloc, AppThemeState>(
+            builder: (context, state) {
+              return MaterialApp(
+                      theme: state.darkTheme ? ThemeData.dark() : ThemeData.light(),
+                      builder: (context, child) => ResponsiveBreakpoints.builder(
+                        child: BlocBuilder<HomeBloc, HomeState>(
+                          builder: (context, state) {
+                            if (state is HomeLoaded) {
+                              return Center(
+                                  child: Lottie.asset("assets/lotties/Loading.json",
+                                      width: 400));
+                            }
+                            if (state is HomeLoading) {
+                              return const HomeScreen();
+                            }
+                            return Center(
+                                child: Lottie.asset("assets/lotties/Loading.json",
+                                    width: 400));
+                          },
+                        ),
+                        breakpoints: [
+                          const Breakpoint(start: 0, end: 450, name: MOBILE),
+                          const Breakpoint(start: 451, end: 800, name: TABLET),
+                          const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                          const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+                        ],
+                      ),
+                      debugShowCheckedModeBanner: false,
+                      routes: AppRoute().getAll,
+                    );
+            },
           );
         }));
   }

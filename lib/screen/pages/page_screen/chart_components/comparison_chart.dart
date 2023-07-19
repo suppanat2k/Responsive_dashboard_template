@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_dashboard/bloc/app_theme_bloc/app_theme_bloc.dart';
 import 'package:project_dashboard/bloc/comparison_chart_bloc/comparison_chart_bloc.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:sizer/sizer.dart';
@@ -45,64 +46,36 @@ class _ComparisonChartState extends State<ComparisonChart> {
       List<ComparisonSeriesMain> getListDataSet1,
       List<ComparisonSeriesSub> getListDataSet2,
       String crosshairText) {
-    return Container(
-      padding: EdgeInsets.all(1.h),
-      decoration: BoxDecoration(
-          color: baseColor.colorMax,
-          borderRadius: BorderRadius.circular(3),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                offset: const Offset(0, 0),
-                spreadRadius: 1,
-                blurRadius: 6)
-          ]),
-      child: Column(
-        children: [
-          Expanded(
-              flex: 1,
-              child: Wrap(
-                children: [
-                  Text(
-                    "Comparison Year/Year",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: ResponsiveBreakpoints.of(context).isDesktop
-                            ? 2.sp
-                            :ResponsiveBreakpoints.of(context).isTablet? 5.sp: 8.sp,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Row(
+    return BlocBuilder<AppThemeBloc, AppThemeState>(
+      builder: (context, state) {
+        return Container(
+          padding: EdgeInsets.all(1.h),
+          decoration: BoxDecoration(
+              color: state.darkTheme? DarkModeColor().colorMax:LightModeColor().colorMax,
+              borderRadius: BorderRadius.circular(3),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: const Offset(0, 0),
+                    spreadRadius: 1,
+                    blurRadius: 6)
+              ]),
+          child: Column(
+            children: [
+              Expanded(
+                  flex: 1,
+                  child: Wrap(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                                color: mainThemeColor.mainColor,
-                                borderRadius: BorderRadius.circular(100),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Colors.black26,
-                                      offset: Offset(2, 2),
-                                      blurRadius: 4)
-                                ]),
-                          ),
-                          SizedBox(
-                            width: 0.1.w,
-                          ),
-                          Text("Total Amount",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: ResponsiveBreakpoints.of(context)
-                                          .isDesktop
-                                      ? 2.sp
-                                      :ResponsiveBreakpoints.of(context).isTablet? 5.sp: 8.sp)),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 1.w,
+                      Text(
+                        "Comparison Year/Year",
+                        style: TextStyle(
+                            fontSize:
+                                ResponsiveBreakpoints.of(context).isDesktop
+                                    ? 2.sp
+                                    : ResponsiveBreakpoints.of(context).isTablet
+                                        ? 5.sp
+                                        : 8.sp,
+                            fontWeight: FontWeight.w600),
                       ),
                       Row(
                         children: [
@@ -112,108 +85,158 @@ class _ComparisonChartState extends State<ComparisonChart> {
                                 height: 10,
                                 width: 10,
                                 decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 255, 168, 162),
+                                    // color: MainColor().mainColor,
+                                    gradient: state.darkTheme? LinearGradient(
+                colors: [MainColorRed().mainColor, MainColorRed().subMainColor]):LinearGradient(
+                colors: [MainColorBlue().mainColor, MainColorBlue().subMainColor],
+              ),
                                     borderRadius: BorderRadius.circular(100),
                                     boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.black26,
-                                          offset: Offset(2, 2),
-                                          blurRadius: 4)
+                                      BoxShadow(color: Colors.black26,
+                                          offset: Offset(2, 2), blurRadius: 4)
                                     ]),
                               ),
                               SizedBox(
                                 width: 0.1.w,
                               ),
-                              Text("Year comparison: ",
+                              Text("Total Amount",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize:
-                                          ResponsiveBreakpoints.of(context)
-                                                  .isDesktop
-                                              ? 2.sp
-                                              :ResponsiveBreakpoints.of(context).isTablet? 5.sp: 8.sp)),
-                              Text("[Year comparison box]",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize:
-                                          ResponsiveBreakpoints.of(context)
-                                                  .isDesktop
-                                              ? 2.sp
-                                              :ResponsiveBreakpoints.of(context).isTablet? 5.sp: 8.sp)),
+                                      fontSize: ResponsiveBreakpoints.of(
+                                                  context)
+                                              .isDesktop
+                                          ? 2.sp
+                                          : ResponsiveBreakpoints.of(context)
+                                                  .isTablet
+                                              ? 5.sp
+                                              : 8.sp)),
                             ],
                           ),
+                          SizedBox(
+                            width: 1.w,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 10,
+                                    width: 10,
+                                    decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                            255, 255, 168, 162),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: Colors.black26,
+                                              offset: Offset(2, 2),
+                                              blurRadius: 4)
+                                        ]),
+                                  ),
+                                  SizedBox(
+                                    width: 0.1.w,
+                                  ),
+                                  Text("Year comparison: ",
+                                      style: TextStyle(
+                                          fontSize:
+                                              ResponsiveBreakpoints.of(context)
+                                                      .isDesktop
+                                                  ? 2.sp
+                                                  : ResponsiveBreakpoints.of(
+                                                              context)
+                                                          .isTablet
+                                                      ? 5.sp
+                                                      : 8.sp)),
+                                  Text("[Year comparison box]",
+                                      style: TextStyle(
+                                          fontSize:
+                                              ResponsiveBreakpoints.of(context)
+                                                      .isDesktop
+                                                  ? 2.sp
+                                                  : ResponsiveBreakpoints.of(
+                                                              context)
+                                                          .isTablet
+                                                      ? 5.sp
+                                                      : 8.sp)),
+                                ],
+                              ),
+                            ],
+                          )
                         ],
-                      )
+                      ),
                     ],
-                  ),
-                ],
-              )),
-          Expanded(
-              flex: 5,
-              child: SfCartesianChart(
-                trackballBehavior: TrackballBehavior(
-                  lineColor: Colors.black12,
-                  lineDashArray: const [5,5],
-                  enable: true,
-                  activationMode: ActivationMode.singleTap,
-                  tooltipSettings:
-                      const InteractiveTooltip(
-                        canShowMarker: true,
-                        format: 'point.x series.name\npoint.y milion'),
-                ),
-                // crosshairBehavior: CrosshairBehavior(
-                //   enable: true,
-                //   activationMode: ActivationMode.singleTap,
-                //   lineColor: Color.fromARGB(255, 227, 227, 227),
-                //   lineWidth: 2,
-                //   shouldAlwaysShow: true,
-                // ),
-                plotAreaBorderWidth: 0,
-                primaryXAxis: CategoryAxis(
-                    majorTickLines: const MajorTickLines(width: 0),
-                    majorGridLines: const MajorGridLines(width: 0)),
-                primaryYAxis: NumericAxis(
-                  majorTickLines: const MajorTickLines(width: 0),
-                ),
-                series: <ChartSeries>[
-                  SplineSeries<ComparisonSeriesMain, dynamic>(
-                      cardinalSplineTension: 1,
-                      dataSource: getListDataSet1,
-                      name: getListDataSet1[0].yearLabel,
-                      color: mainThemeColor.mainColor,
-                      enableTooltip: true,
-                      xValueMapper: (ComparisonSeriesMain sales, _) =>
-                          sales.monthLabel,
-                      yValueMapper: (ComparisonSeriesMain sales, _) =>
-                          sales.qtyMonth,
-                      dataLabelSettings: const DataLabelSettings(isVisible: false)),
-                  getListDataSet2.isEmpty
-                      ? SplineSeries<ComparisonSeriesMain, dynamic>(
+                  )),
+              Expanded(
+                  flex: 5,
+                  child: SfCartesianChart(
+                    trackballBehavior: TrackballBehavior(
+                      lineColor: state.darkTheme?Colors.white12:Colors.black12,
+                      lineDashArray: const [5, 5],
+                      enable: true,
+                      activationMode: ActivationMode.singleTap,
+                      tooltipSettings: const InteractiveTooltip(
+                          canShowMarker: true,
+                          format: 'point.x series.name\npoint.y milion'),
+                    ),
+                    // crosshairBehavior: CrosshairBehavior(
+                    //   enable: true,
+                    //   activationMode: ActivationMode.singleTap,
+                    //   lineColor: Color.fromARGB(255, 227, 227, 227),
+                    //   lineWidth: 2,
+                    //   shouldAlwaysShow: true,
+                    // ),
+                    plotAreaBorderWidth: 0,
+                    primaryXAxis: CategoryAxis(
+                        majorTickLines: const MajorTickLines(width: 0),
+                        majorGridLines: const MajorGridLines(width: 0)),
+                    primaryYAxis: NumericAxis(
+                      majorTickLines: const MajorTickLines(width: 0),
+                    ),
+                    series: <ChartSeries>[       
+                      //sub line             
+                      getListDataSet2.isEmpty
+                          ? SplineSeries<ComparisonSeriesMain, dynamic>(
+                              dataSource: getListDataSet1,
+                              color: state.darkTheme?MainColorRed().subMainColor2: MainColorBlue().mainColor,
+                              enableTooltip: false,
+                              xValueMapper: (ComparisonSeriesMain sales, _) =>
+                                  sales.monthLabel,
+                              yValueMapper: (ComparisonSeriesMain sales, _) =>
+                                  sales.qtyMonth,
+                              dataLabelSettings:
+                                  const DataLabelSettings(isVisible: false))
+                          : SplineSeries<ComparisonSeriesSub, dynamic>(
+                              dataSource: getListDataSet2,
+                              name: getListDataSet2[0].yearLabel,
+                              dashArray: const <double>[5, 5],
+                              enableTooltip: true,
+                              color: state.darkTheme?const Color.fromARGB(255, 82, 82, 82).withOpacity(0.2): const Color.fromARGB(255, 255, 168, 162),
+                              xValueMapper: (ComparisonSeriesSub sales, _) =>
+                                  sales.monthLabel,
+                              yValueMapper: (ComparisonSeriesSub sales, _) =>
+                                  sales.qtyMonth,
+                              dataLabelSettings:
+                                  const DataLabelSettings(isVisible: false)),
+
+                          //main line     
+                           SplineSeries<ComparisonSeriesMain, dynamic>(
+                          cardinalSplineTension: 1,
                           dataSource: getListDataSet1,
-                          color: mainThemeColor.mainColor,
-                          enableTooltip: false,
+                          name: getListDataSet1[0].yearLabel,
+                          color: state.darkTheme?MainColorRed().mainColor: MainColorBlue().mainColor,
+                          enableTooltip: true,
                           xValueMapper: (ComparisonSeriesMain sales, _) =>
                               sales.monthLabel,
                           yValueMapper: (ComparisonSeriesMain sales, _) =>
                               sales.qtyMonth,
                           dataLabelSettings:
-                              const DataLabelSettings(isVisible: false))
-                      : SplineSeries<ComparisonSeriesSub, dynamic>(
-                          dataSource: getListDataSet2,
-                          name: getListDataSet2[0].yearLabel,
-                          dashArray: const <double>[5, 5],
-                          enableTooltip: true,
-                          color: const Color.fromARGB(255, 255, 168, 162),
-                          xValueMapper: (ComparisonSeriesSub sales, _) =>
-                              sales.monthLabel,
-                          yValueMapper: (ComparisonSeriesSub sales, _) =>
-                              sales.qtyMonth,
-                          dataLabelSettings:
-                              const DataLabelSettings(isVisible: false))
-                ],
-              )),
-        ],
-      ),
+                              const DataLabelSettings(isVisible: false)),
+                    ],
+                  )),
+            ],
+          ),
+        );
+      },
     );
   }
 }

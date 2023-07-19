@@ -94,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Column(
                       children: [
                         //filter
-                        Expanded(flex: 1, child: Container(color: Colors.grey)),
+                        Expanded(flex: 1, child: Container(color: Colors.grey,child: const Center(child: Text("FilterZone"),),)),
                         SizedBox(
                           height: 1.h,
                         ),
